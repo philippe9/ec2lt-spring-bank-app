@@ -1,0 +1,29 @@
+<!-- login.component.html -->
+<div class="container flex justify-center items-center h-screen bg-neutral-200">
+  <p-card header="">
+    <h2 class="text-2xl text-center font-bold mb-3">Login</h2>
+    <form (ngSubmit)="onLogin()" class="flex flex-col">
+      <label class="mb-3">Email</label>
+      <input
+        pInputText
+        type="email"
+        [(ngModel)]="email"
+        name="email"
+        class="mb-3"
+        required
+      />
+      <label class="mb-3">Mot de passe</label>
+      <input
+        pInputText
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        class="mb-3"
+        required
+      />
+      <button pButton type="submit" class="mb-3">Login</button>
+      <a href="/account-creation">Je veux creer mon compte utilisateur</a>
+    </form>
+  </p-card>
+</div>
+<p-toast />

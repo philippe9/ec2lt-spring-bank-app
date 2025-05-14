@@ -1,0 +1,97 @@
+<div class="container flex justify-center items-center h-screen bg-neutral-200">
+  <p-card *ngIf="!account">
+    <button pButton (click)="showDialog()">Creer votre compte bancaire</button>
+  </p-card>
+
+  <p-card *ngIf="account">
+    <div class="flex">
+      <h2 class="text-2xl text-center font-bold mb-3 mr-3">Vos Transactions</h2>
+      <p-button icon="pi pi-power-off" severity="danger" (click)="logout()" />
+    </div>
+
+    <button pButton (click)="visibleTransaction = true">
+      Faire une transaction
+    </button>
+
+    <p-table [value]="transactions">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Destinataire</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-transaction>
+        <tr>
+          <td>{{ transaction.date | date }}</td>
+          <td>{{ transaction.montant }}</td>
+          <td>{{ transaction.type }}</td>
+          <td>{{ transaction.destination }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
+<p-dialog
+  header="Edit Profile"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+>
+  <span class="p-text-secondary block mb-8">Creation d'un compte</span>
+  <div class="flex items-center gap-4 mb-4">
+    <label for="type" class="font-semibold w-24">Type</label>
+    <input pInputText id="type" class="flex-auto" [(ngModel)]="typeAccount" />
+  </div>
+  <div class="flex items-center gap-4 mb-8">
+    <label for="amount" class="font-semibold w-24">Montant</label>
+    <input pInputText id="amount" class="flex-auto" [(ngModel)]="montant" />
+  </div>
+  <div class="flex justify-end gap-2">
+    <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+    <p-button label="Save" (click)="bankAccountCreation()" />
+  </div>
+</p-dialog>
+<p-dialog
+  header="Edit Profile"
+  [modal]="true"
+  [(visible)]="visibleTransaction"
+  [style]="{ width: '25rem' }"
+>
+  <span class="p-text-secondary block mb-8">Creation d'un transaction</span>
+  <div class="flex items-center gap-4 mb-4">
+    <label for="type" class="font-semibold w-24">Type</label>
+    <!-- <input pInputText id="type" class="flex-auto" [(ngModel)]="type" /> -->
+    <p-select
+      [options]="operations"
+      [(ngModel)]="type"
+      optionLabel="name"
+      placeholder="Select a City"
+      class="w-full md:w-56"
+    />
+  </div>
+  <div class="flex items-center gap-4 mb-8">
+    <label for="amount" class="font-semibold w-24">Montant</label>
+    <input pInputText id="amount" class="flex-auto" [(ngModel)]="montant" />
+  </div>
+  <div class="flex items-center gap-4 mb-8" *ngIf="type.code == 'transfert'">
+    <label for="destination" class="font-semibold w-24"
+      >Compte destinataire</label
+    >
+    <input
+      pInputText
+      id="destination"
+      class="flex-auto"
+      [(ngModel)]="destination"
+    />
+  </div>
+  <div class="flex justify-end gap-2">
+    <p-button
+      label="Cancel"
+      severity="secondary"
+      (click)="visibleTransaction = false"
+    />
+    <p-button label="Save" (click)="createTransaction()" />
+  </div>
+</p-dialog>
